@@ -1,0 +1,3 @@
+
+CLS         Clears the screen.
+CV          Displays curriculum vitae.

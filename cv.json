@@ -1,0 +1,75 @@
+{
+    "about_me": "My name is Lim and I like to think of my self as a software developer. Started in 2015 where I wrote my first SQL report. Now I spend most of my time writing Groovy Script in SAP CLoud Integration Platform.\nI have a passion for creating things, whether it developing applications / process within the business, building my own dining table or cooking a sunday meals for my family.\nCreating things and having people appreciate your work is what drives me.",
+    "contacts": {
+        "phone": "+61 431 017 439",
+        "email": "lim7ung@gmail.com",
+        "web_site": "bulltheng.dev"
+    },
+    "job_history": [
+        {
+            "year": "2018-Present",
+            "title": "Business System Analyst",
+            "company": "GrainCorp",
+            "role_description": "Creating and supporting system to system integration in SAP Cloud Integration Platform",
+            "achievement": "CPI developer"
+        },
+        {
+            "year": "2015-2018",
+            "title": "Programmer analyst",
+            "company": "GrainCorp",
+            "role_description": "Supporting and creating in-house business process in K2, Service Now and ASP.net, SharePoint",
+            "achievement": "Upgrading K2 platform moving 12 business processes and 5 reports.\nImplmented Service Now, replacing user onboarding and off boarding process, IT user access. replaced VMwave Service Manager"
+        },
+        {
+            "year": "2011-2014",
+            "title": "Senior Service Desk Analyst",
+            "company": "GrainCorp",
+            "role_description": "Second in command, level 1 and level 2 IT support",
+            "achievement": "Second in command, team lead, SharePoint adminstration. Secondment to application development team."
+        },
+        {
+            "year": "2008-2010",
+            "title": " Service Desk Analyst",
+            "company": "Datacom NZ",
+            "role_description": "IT Support for NZ Post, Kiwi Bank, Farmer Mutual Group, NZ Couriers",
+            "achievement": "Subject expert matter Kiwi Bank."
+        }
+    ],
+    "education": [
+        {
+            "year": "2008",
+            "school": "Wellington Victoria University",
+            "degree": "Bachelor of Commerce, Major in E-Commerce and Information"
+        },
+        {
+            "year": "1996",
+            "school": "NaeNae College"
+        }
+    ],
+    "interest": [
+        "Computer programming",
+        "Photography",
+        "Cooking",
+        "Wood working"
+    ],
+    "skill_set": {
+        "languages": [
+            "Groovy",
+            "JavaScript",
+            "SQL",
+            "C#",
+            "Python"
+        ],
+        "tools": [
+            "VS code",
+            "Git hub",
+            "VS Studio"
+        ],
+        "enterprise_platform": [
+            "Service Now",
+            "SAP Cloud Platform Integration Suite",
+            "K2",
+            "Azure (Web services, Logic App)"
+        ]
+    }
+}
