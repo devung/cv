@@ -1,162 +1,12 @@
+/* Style elements */
 body {
   background-color: black;
   padding: 1em;
-  font-family: Consolas;
+  font-family: Consolas, Menlo, Droid Sans Mono, Courier New;
   color: #c3c3c3;
 }
-
-.console-result {
-  display: block;
-  white-space:pre-wrap;
-}
-
-span {
-  color: #c3c3c3;
-
-  /* display: inline-block; */
-
-  /* display: inline-block; */
-  /* all: initial; */
-  /* font-family: Consolas;*/
-  /* display: inline-block; */
-  /* word-wrap: break-word; */
-  /* white-space: pre; */
-  /* padding-left: 50px; */
-  /* font-size: 10; */
-  /* padding: 0px; */
-  /* margin: 0px; */
-  /* outline: none; */
-  /* padding:0px; */
-  /* margin:0px; */
-  /* *display: inline; */
-}
-
-input { caret-color: transparent; }
-
-/* .console-result {
-  padding-left: 2em;
-  text-indent: -2em;
-} */
-
-/* 
-#console-input-current {
-  background-color: black;
-  font-family: Consolas;
-  color: #c3c3c3;
-  border-width:0px;
-  border:none;
-  font-size: inherit;
-
-} */
-/* hr {
-  clear:both;
-} */
-div.parent::before { content: ' '; display: block; }
-/* .key { display: block; } */
-.key { white-space: pre;}
-.value { display: inline-grid; }
-.array > .element-text > .value { display: block; }
-span.key::after { content: ' : '; }
-/* .key:before { content: ' ';} */
-/* .array-value::before { content: '-'; } */
-/* .array-value{ display: block; } */
-/* .array::before { content: ' '; display: block;} */
-/* .array-element .object-parent::after{ content: "\A";} */
-/* .value:before { content: ' : '; } */
-/* div.object::before { content: ' '; display: block;} */
-
-/* div.object{white-space: pre;} */
-/* div.object span.key::before { content: "    "} */
-
-/* --- indent key in an object */
-/* div.object > div.key-text-pair > span.key::before{ content: "    " */
-
-/* .element{white-space: ;} */
-/* .array > .element::after{ content: "-"; color: yellow;} */
-/* .element + .element::before{ content: "-"; color: yellow;} */
-
-/* div.array > div.element-text > span.value::before{ content: "-----"; color: yellow; } */
-/* div.array > div.element-object{ white-space: pre; } */
-
-/* split objects in an array */
-/* div.array > div.element-object:nth-child(n+2)::before{ content: "-"; color: black; } */
-.array > div.element-object:nth-child(n+2) { padding-top: 2ch; }
-
-
-
-/* div.array > div.element:nth-child(n+2)::before{ content: "-"; color: green; } */
-
-
-
-
-
-/* span.value {white-space: pre;} */
-/* div.array div.element span.value::before{ content: "    ";} */
-
-/* div.object div.array::after{ content: "\A"} */
-/* .object + .object::before{ content: "-"; color: green; } */
-/* .object > .array > .element > .value::before{ content: "        "} */
-
-/* Style object of arrays */
-/* .object > .child::before{ content: "    \A"; } */
-/* div.object div.child:nth-child(n+2)::before{ content: "-------------------"; } */
-/* .cv ~ div.child:nth-child(n+1)::before{ content: "-------------------"; } */
-.object > .child::after{ content: " :"; }
-/* --- indent key in an array */
-/* .object > .child::before { content: "----"; } */
-
-
-/* div.object > div.array > div.element > span.value::before{ content: "        "; } */
-/* div.array > div.element > span.value::before{ content: "    "} */
-/* div.Parent-Object > div.array > div.element > span.value::before{ content: "----"; color: yellow; } */
-
-/* --- indent value in an array */
-/* div.Parent-Object > div.array > div.element > span.value::before{ content: "----"; color: black; } */
-
-
-/* div.Parent-Object > div.object:nth-child(n+2)::before{ content: "\A"; }  */
-
-/* div.child { display: inline-table; text-align: left; } */
-/* div.Parent-Object div.object:nth-child(n+3) div.child::before { content: "\A     " } */
-/* div.Parent-Object div.object:nth-child(n+3) div.array::before { content: "-"; color: black;} */
-/* div.array span.value { display: contents} */
-/* div.Parent-Object div.array::before { content: "-" } */
-div.element-text > span.value{ white-space: pre; }
-
-/* --- double indent object of arrays */
-/* div.element-text > span.value::before{ content: "        "; }  */
-
-div.key + div { padding-left: 4ch; }
-
-/* split arrays in an object */
-/* .object:not(:first-child) { padding-top: 2ch; background-color: blueviolet;} */
-.child:not(:first-child) { padding-top: 2ch; }
-/* div.array:not(:last-child) > div.element-text:last-child > span.value::after{ content: "\A-"; color: yellow; } */
-
-/* div.child::before { content: "\A" } */
-/* div.child:first-of-type::before { content: "\A" } */
-/* div.array { display: inline-table;} */
-/* .object { display: inline-block;} */
-
-
-/* .sub-object {content: ' '; display: block;} */
-/* .child{white-space: pre;} */
-/* .child::before{ content: "\A     "} */
-/* .object-parent .sub-object::before { content: "\A" } */
-/* .sub-object.key-pair::before {content: "\A"} */
-.hide { display: none; }
-
-#console-input-current:focus {
-  outline: none;
-
-  /* outline-width: 0; */
-  /* font-family: Consolas; */
-  /* background-color: yellow; */
-}
-
-/* input:disabled { background-color: purple; } */
-
 input {
+  caret-color: transparent;
   border: none;
   font-size: inherit;
   font-family: Consolas;
@@ -164,43 +14,89 @@ input {
   background-color: black;
   border-color: purple;
   outline: none;
-
 }
+span { color: #c3c3c3; }
 
-#help {
-  position: relative;
-  /* background-color: grey;
-  height:fit-content; */
-}
-#help-center {
-  position: absolute;
-  /* display: inline; */
-  /* top: 50%; */
-  top: 150px;
-  left: 50%;
-  /* margin-top: 1090px; */
-  margin-left: -250px;
-  opacity: 30%;
-  /* background-color: green; */
-}
 
+/* Style elements with specific #Ids */
+#console-input-current:focus { outline: none; }
 #help-inline {
-  /* position: absolute; */
-  /* display: inline; */
-  /* top: 50%;
-  left: 50%;
-  margin-top: -90px;
-  margin-left: -250px; */
-  margin-left: 4ch;
+  margin-left: 0.5ch;
   opacity: 30%;
 }
 
-/* #help + .fade-out { opacity: 0;} */
 
-.fade-in {
-  animation: fadeIn ease-in 200ms;
+/* Style elements with specific .Classes */
+.console-result {
+  display: block;
+  white-space:pre-wrap;
+}
+.hide { display: none; }
+
+
+/* Style element json specific classes */
+/* indent all child keys and values */
+.key + div { 
+  padding-left: 4ch;
 }
 
+
+/* Style json keys */
+.parent::before {
+  /* Add extra new line between parent json keys */
+  content: ' ';
+  display: block;
+}
+.key { 
+  /* align all text value to the right */
+  white-space: pre;
+}
+  /* add : separator after each key*/
+.key::after {
+  /* key - text values */
+  content: ' : ';
+}
+.object > .child::after{
+  /* key : array values */
+  content: " :";
+}
+
+
+/* Style json text values */
+.value {
+  /* align values to the right of its key */
+  display: inline-grid;
+}
+
+
+/* Style json array values */
+.array > div.element-object:nth-child(n+2) {
+  /* add new line space between each object element in an array*/
+  padding-top: 2ch;
+}
+
+
+/* Style json object values */
+.child:not(:first-child) {
+  /* Add extra new line between each key - array value */
+  padding-top: 2ch;
+}
+
+
+/* Style elements with animations */
+#console-cursor {
+  animation: 1s blink step-end infinite;
+  font-weight: bold;
+}
+@keyframes blink {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: #c3c3c3;
+  }
+}
+.fade-in { animation: fadeIn ease-in 200ms; }
 @keyframes fadeIn {
   0% {
     opacity:0;
@@ -209,46 +105,15 @@ input {
     opacity:30%;
   }
 }
-
 .fade-out {
   animation: fadeOut ease-out 200ms 1;
   animation-fill-mode: forwards;
 }
-
 @keyframes fadeOut {
   0% {
     opacity:30%;
   }
   100% {
     opacity:0;
-  }
-}
-
-.key-caps {
-  background-color: dimgray;
-  padding: 1ch 2ch;
-  border-radius: 5px;
-  margin: 0.3rem;
-}
-
-#console-cursor {
-  /* animation: blink 1s linear infinite; */
-  animation: 1s blink step-end infinite;
-  font-weight: bold;
-  /* font-size: 20px; */
-}
-
-/* @keyframes blink {
-  10% {
-    opacity: 0;
-  }
-} */
-
-@keyframes blink {
-  from, to {
-    color: transparent;
-  }
-  50% {
-    color: #c3c3c3;
   }
 }
