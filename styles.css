@@ -9,7 +9,7 @@ input {
   caret-color: transparent;
   border: none;
   font-size: inherit;
-  font-family: Consolas;
+  font-family: Consolas, Menlo, Droid Sans Mono, Courier New;
   color: #c3c3c3;
   background-color: black;
   border-color: purple;
@@ -22,7 +22,7 @@ span { color: #c3c3c3; }
 #console-input-current:focus { outline: none; }
 #help-inline {
   margin-left: 0.5ch;
-  opacity: 30%;
+  opacity: 40%;
 }
 
 
