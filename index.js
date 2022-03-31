@@ -1,20 +1,38 @@
 // Global variables
 const _INDENT_SIZE = 4
 const _CHAR_SIZE = 8.8 // in px --> change to CH
-let _cv
+const _EXT_URL = "https://ipinfo.io/json"
+const _GITHUB_URL = "https://github.com/devung/cv"
+let _commands
 let _commandList = []
-let _cmd_idx = null
+let _cmdIdx = null
 let _userPath = 'C:\\Users\\limung.dev>'
-let _res
+let _clientDetails = {}
+let _unknown = {}
 
 // Initialize
-loadCV("cv.json")
+loadCommands("commands.json")
+getClientLocation()
 loadDefaultConsole(_userPath)
+_unknown['nav_appVersion'] = navigator.appVersion
+_unknown['nav_userAgent'] = navigator.userAgent
+_unknown['doc_URL'] = document.URL
+_unknown['doc_referrer'] = document.referrer
+_unknown['doc_loc_host'] = document.location.host
+_unknown['viewport_width'] = document.documentElement.clientWidth
+_unknown['viewport_height'] = document.documentElement.clientHeight
+console.log(document.referrer) // ip?
+console.log({document})
+console.log({navigator})
+console.log({window})
+console.log(this)
+console.log({location})
+console.log(document.documentElement.clientWidth)
 
 // Console
 function loadDefaultConsole(path) {
     let a = document.getElementById('console-log-default')
-    a.innerHTML = "Microsoft Windows [Version 10.0.19042.1415]<br>(c) Microsoft Corporation. All rights reserved."
+    a.innerHTML = "<span>Microsoft Windows </span><span>[Version 10.0.19042.1415]</span><br><span>(c) Microsoft Corporation. </span><span>All rights reserved.</span>"
     createInput(path)
 }
 
@@ -105,17 +123,17 @@ function getCommandList(key) {
     const max = _commandList.length
     let i = document.getElementById('console-input-current')
     const v = i.value
-    if (_cmd_idx === null) _cmd_idx = max
+    if (_cmdIdx === null) _cmdIdx = max
 
-    if (key === 'ArrowUp' && _cmd_idx != 0) {
-        _cmd_idx = _cmd_idx - 1
+    if (key === 'ArrowUp' && _cmdIdx != 0) {
+        _cmdIdx = _cmdIdx - 1
     } 
 
-    if (key === 'ArrowDown' && _cmd_idx < (max - 1)) {
-        _cmd_idx = _cmd_idx + 1
+    if (key === 'ArrowDown' && _cmdIdx < (max - 1)) {
+        _cmdIdx = _cmdIdx + 1
     }
 
-    const c = _commandList[_cmd_idx]
+    const c = _commandList[_cmdIdx]
     const le = (c) ? c.length : null
 
     if (c && (c != v)) {
@@ -133,43 +151,118 @@ function addToCommandList(command) {
     const last = _commandList.at(-1)
     if (last != command) {
         _commandList.push(command)
-        _cmd_idx = _commandList.length
+        _cmdIdx = _commandList.length
     }
 }
 
 async function invokeCommand(cmd, path) {
-    let err = `'${cmd}' is not recognized as an internal or external command,<br>operable program or batch file.`
+    let err = `'${cmd}' is not recognized as an internal or external command,\noperable program or batch file.`
     cmd = cmd.toLowerCase()
 
-    if (cmd) {
-        const c = cmd.split(' ')
-        const cmdName = c[0]
-        const cmdAttributes = c[1]
+    const c = cmd.indexOf(' ')
+    const cmdName = (c != -1 ) ? cmd.substring(0, cmd.indexOf(' ')) : cmd
+    const cmdAttributes = (c != -1) ? cmd.substring(cmd.indexOf(' ') + 1) : null
 
-        // {Check} if text file exist
-        let text = await loadTextFile(`${cmdName}.txt`)
-        if (text) {
-            err = null
-            printConsoleResult(text)
-        }
-
-        // Check if json file exist
-        let json = await loadJsonFile(`${cmdName}.json`)
-        if (json && cmdAttributes && cmdAttributes.length > 0) {
-            let res = json[cmdAttributes] || null
-            if (res) {
-                err = null
-                printConsoleResult(prettyPrintChild(res))
+    if (cmdName && cmdName != 'help' && cmdName != 'cls' && cmdName != 'ip' && cmdName != 'loc') {
+        const file = _commands[cmdName]?.file
+        const ext = (file) ? file.match(/[0-9a-z]+$/i) : null
+        if (file) {
+            let res = await loadFile(file)
+            if (ext == 'txt') {
+                const text = await res.text()
+                if (text) {
+                    err = null
+                    printConsoleResult(text)
+                }
             }
-        }
-        if (json && !cmdAttributes) {
-            let res = json
-            err = null
-            printConsoleResult(`<div class="${cmdName}">${prettyPrint(res)}</div>`)
+            let json
+            if (ext == 'json') json = await res.json()
+            if (json && cmdAttributes?.length > 0) {
+                let r = json[cmdAttributes] || null
+                if (r) {
+                    err = null
+                    printConsoleResult(prettyPrintChild(r))
+                }
+            }
+            if (json && !cmdAttributes) {
+                let r = json
+                err = null
+                printConsoleResult(`<div class="${cmdName}">${prettyPrint(r)}</div>`)
+            }
         }
     }
 
-    if (cmd == 'cls') {
+    if (cmdName == 'ip') {
+        const ip = _clientDetails.ip
+        if (ip) {
+            err = null
+            printConsoleResult("\nIPv4 Address . . . . : " +_clientDetails.ip)
+        }
+    }
+
+    if (cmdName == 'loc') {
+        const loc = _clientDetails.location
+        let res = []
+        if (loc) {
+            err = null
+            for (const [k, v] of Object.entries(loc)) {
+                res.push(`${k.padEnd(10, ' ')} : ${v}` )
+            }
+            printConsoleResult("\n" + res.join("\n"))
+        }
+    }
+
+    if (cmdName == 'echo') {
+        err = null
+        if (cmdAttributes) printConsoleResult(cmdAttributes)
+        else printConsoleResult("ECHO is on.")
+    }
+
+    if (cmdName == 'github') {
+        err = null
+        window.open(_GITHUB_URL)
+        printConsoleResult(`Open GitHub page ${_GITHUB_URL}`)
+    }
+
+    if (cmdName == 'unknown') {
+        const un = _unknown
+        let res = []
+        if (un) {
+            err = null
+            for (const [k, v] of Object.entries(un)) {
+                res.push(`${k} :\n    ${v}` )
+            }
+            printConsoleResult("\n" + res.join("\n"))
+        }
+    }
+
+    if (cmdName == 'help') {
+        err = null
+        if (cmdAttributes) {
+            const file = _commands[cmdAttributes]?.file
+            const ext = file.match(/[0-9a-z]+$/i)
+            if (ext == 'txt') return // No help to read from txt file
+            if (ext == 'json') {
+                let res = await loadFile(file)
+                let json = await res.json()
+                const desc = _commands[cmdAttributes].description + "\n\n"
+                const attr = Object.keys(json).map( x => `${x}`)
+                const usage = `USAGE:\n${cmdAttributes} [use one attribute - ${attr.join(' | ')}]`
+                printConsoleResult(desc + usage)
+            }
+        } else {
+            let list = []
+            for (var key in _commands) {
+                if (_commands.hasOwnProperty(key)) {
+                    list.push(`${key.padEnd(5, ' ')} ${_commands[key].description}`)
+                }
+            }
+            let text = "\nFor more information on a specific command, type HELP command-name\n"
+            printConsoleResult(text + list.join('\n'))
+        }
+    }
+
+    if (cmdName == 'cls') {
         err = ''
         let c = document.getElementById('console')
         removeAllChildNodes(c)
@@ -188,9 +281,8 @@ function removeAllChildNodes(parent) {
 }
 
 // Load files
-async function loadCV(filePath) {
-    let res = await fetch(filePath)
-    _cv = await res.json()
+async function loadCommands(filePath) {
+    _commands = await loadJsonFile(filePath)
 }
 
 async function loadJsonFile(fileName) {
@@ -206,6 +298,14 @@ async function loadTextFile(fileName) {
     try {
         let res = await fetch(fileName)
         if (res.ok) return res.text()
+    } catch(err) {
+        // do nothing
+    }
+}
+async function loadFile(fileName) {
+    try {
+        let res = await fetch(fileName)
+        if (res.ok) return res
     } catch(err) {
         // do nothing
     }
@@ -227,7 +327,7 @@ function createInlineHelper(fade) {
     document.getElementById('console-cursor').after(s)
 }
 
-// Pretty print
+// Pretty print JSON files
 function prettyPrint(value, key = null, pad = 0) {
     const cn = value.constructor.name
     let pretty
@@ -289,11 +389,11 @@ function prettyPrintChild(value, key = null, parent = null, pad = 0) {
 function prettyPrintString(value, key = null, parent = null, pad = 0) {
     let res
     if (key) {
-        let k = capitalize(key).padEnd(pad, ' ')
+        let k = capitalize(key)
         let sv =  `<span class="value">${value}</span>`
         res = (parent === key) 
             ? `<span class="key hide" pad="${pad}">${k}</span>${sv}` 
-            : `<span class="key" pad="${pad}">${k}</span>${sv}`
+            : `<span class="key" pad="${pad}" data-key="${k}">${k.padEnd(pad, ' ')}</span>${sv}`
     } else {
         res = `<span class="value">${value}</span>`
     }
@@ -301,7 +401,26 @@ function prettyPrintString(value, key = null, parent = null, pad = 0) {
     return res
 }
 
-// String function
+// String functions
 function capitalize(string) {
     return string[0].toUpperCase() + string.slice(1).toLowerCase().replaceAll('_', ' ')
+}
+
+// On-load functions
+async function getClientLocation() {
+    console.log('getting location')
+    try {
+        let res = await fetch(_EXT_URL)
+        if (res.ok) {
+            const data = await res.json()
+            _clientDetails["ip"] = data.ip
+            let location = {}
+            location["city"] = data.city
+            location["region"] = data.region
+            location["country"] = data.country
+            _clientDetails["location"] = location
+        }
+    } catch(err) {
+        // do nothing
+    }
 }
