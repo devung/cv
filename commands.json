@@ -1,0 +1,22 @@
+{
+    "cls" : {
+        "description": "Clears the screen."
+    },
+    "cv" : {
+        "description": "Displays curriculum vitae.",
+        "file": "cv.json"
+    },
+    "echo" : {
+        "description": "Displays message."
+    },
+    "ip" : {
+        "description": "Displays public IPv4 address."
+    },
+    "lo": {
+        "description": "Displays lorem ipsum text.",
+        "file": "lorem.txt"
+    },
+    "loc" : {
+        "description": "Displays your location."
+    }
+}
