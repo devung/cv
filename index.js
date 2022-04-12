@@ -148,7 +148,8 @@ function getCommandList(key) {
 }
 
 function addToCommandList(command) {
-    const last = _commandList.at(-1)
+    // const last = _commandList.at(-1) // does not work in Safari
+    const last = _commandList[_commandList.length - 1]
     if (last != command) {
         _commandList.push(command)
         _cmdIdx = _commandList.length
