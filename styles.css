@@ -1,32 +1,37 @@
+/* Style elements */
 * {
   margin: 0;
   padding: 0;
 }
 
-/* Style elements */
 body {
   background-color: black;
   padding: 1em;
-  font-family: Consolas, Menlo, Droid Sans Mono, Courier New;
+  font-family: Consolas, Menlo, Droid Sans Mono, Courier, Courier New;
   color: #c3c3c3;
 }
 input {
   caret-color: transparent;
-  border: none;
+  border-style: none;
   font-size: inherit;
-  font-family: Consolas, Menlo, Droid Sans Mono, Courier New;
+  font-family: Consolas, Menlo, Droid Sans Mono, Courier, Courier New;
   color: #c3c3c3;
   background-color: black;
-  border-color: purple;
   outline: none;
+  /* fix for safari; cuts first character */
+  text-align: right; 
 }
 span { color: #c3c3c3; }
 
 
 /* Style elements with specific #Ids */
+#console-log-default span {
+  display: inline-block;
+  white-space:pre-wrap;
+}
 #console-input-current:focus { outline: none; }
 #help-inline {
-  margin-left: 0.5ch;
+  display: block;
   opacity: 40%;
 }
 
@@ -41,8 +46,11 @@ span { color: #c3c3c3; }
 
 /* Style element json specific classes */
 /* indent all child keys and values */
-.key + div { 
-  padding-left: 4ch;
+.key + div { padding-left: 4ch; }
+@media only screen and (max-width: 500px) {
+  .key + div {
+    padding-left: 2ch;
+  }
 }
 
 
@@ -65,12 +73,32 @@ span { color: #c3c3c3; }
   /* key : array values */
   content: " :";
 }
+@media only screen and (max-width: 500px) {
+  span.key {
+    /* key - text values */
+    visibility: hidden;
+  }
+  span.key::before {
+    visibility: visible;
+    content: attr(data-key) " : ";
+  }
+}
 
 
 /* Style json text values */
 .value {
   /* align values to the right of its key */
   display: inline-grid;
+}
+@media only screen and (max-width: 500px) {
+  .key + .value {
+    display: block;
+    margin-left: 2ch;
+  }
+  .hide + .value {
+    margin-left: 0ch;
+  }
+
 }
 
 

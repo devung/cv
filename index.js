@@ -1,6 +1,7 @@
 // Global variables
 const _INDENT_SIZE = 4
-const _CHAR_SIZE = 8.8 // in px --> change to CH
+const _CHAR_SIZE = 1   // in ch or 8.8px
+const _CHAR_BASE = 0.2 // required for iphone devices, random padding within input
 const _EXT_URL = "https://ipinfo.io/json"
 const _GITHUB_URL = "https://github.com/devung/cv"
 let _commands
@@ -9,6 +10,7 @@ let _cmdIdx = null
 let _userPath = 'C:\\Users\\limung.dev>'
 let _clientDetails = {}
 let _unknown = {}
+let _touch = 0
 
 // Initialize
 loadCommands("commands.json")
@@ -32,6 +34,8 @@ console.log(document.documentElement.clientWidth)
 // Console
 function loadDefaultConsole(path) {
     let a = document.getElementById('console-log-default')
+    // TO-DO 
+    //Detects client OS
     a.innerHTML = "<span>Microsoft Windows </span><span>[Version 10.0.19042.1415]</span><br><span>(c) Microsoft Corporation. </span><span>All rights reserved.</span>"
     createInput(path)
 }
@@ -47,9 +51,11 @@ function createInput(path) {
     let nci = document.createElement('input')
     nci.setAttribute('id', 'console-input-current')
     nci.setAttribute('type', 'text')
-    nci.setAttribute('style', 'width: 0px')
+    nci.setAttribute('style', `width: ${_CHAR_BASE}ch`)
     c.appendChild(nci)
 
+    // Custom underscore caret
+    // Css caret-shape no supported in browsers
     let ncc = document.createElement('span')
     ncc.setAttribute('id', 'console-cursor')
     ncc.innerText = '_'
@@ -75,17 +81,18 @@ function printConsoleResult(results, type = 'success') {
 // Events
 function addEventCommand() {
     let i = document.getElementById('console-input-current')
-    i.addEventListener('input', function (e) {
+    i.addEventListener('input', e => {
+        // Because of custom caret; auto grow input length to text size.
         let le = Number(i.value.length)
-        let wi = le * _CHAR_SIZE
-        i.setAttribute('style', `width: ${wi}px`)
+        // Issues with Safari input; cuts of first character.
+        // Add a base width to correct this.
+        let wi = le * _CHAR_SIZE + _CHAR_BASE
+        i.setAttribute('style', `width: ${wi}ch`)
 
-        let s = (wi > 1) ? false : true
-
-        toggleHelp(s)
+        toggleHelp((wi > 1) ? false : true)
 
     })
-    i.addEventListener('keyup', function (e) {
+    i.addEventListener('keyup', e => {
         const key = e.key
         if (key === 'Enter') {
 
@@ -113,13 +120,35 @@ function addEventCommand() {
             getCommandList(key)
         }
     })
-    window.onclick = () => {
-        i.focus()
-    }
+    document.addEventListener('touchstart', e => {
+        // Incase keyboard disappear on mobile device. 
+        // Single tap to focus on screen to bring back keyboard.
+        // Global variable _touch = 1 indicates a press
+        // e.preventDefault() adding this causing violation error
+        _touch = 1
+    })
+    document.addEventListener('touchmove', e => {
+        // Without tracking touchmove, users will not be able to scroll
+        // So set _touch = 2
+        e.preventDefault()
+        _touch = 2
+
+    })
+    document.addEventListener('touchend', e => {
+        e.preventDefault()
+        // Only set focus on a tap and not scroll
+        if (_touch == 1) document.getElementById('console-input-current').focus()
+        _touchmove = 0
+    })
+    document.addEventListener('click', e => {
+        document.getElementById('console-input-current').focus()
+    })
 }
 
 // Commands
+
 function getCommandList(key) {
+    // Toggle through list of executed commands using up or down arrow key
     const max = _commandList.length
     let i = document.getElementById('console-input-current')
     const v = i.value
@@ -137,9 +166,8 @@ function getCommandList(key) {
     const le = (c) ? c.length : null
 
     if (c && (c != v)) {
-        const ts = 8.8
-        const wi = le * ts
-        i.setAttribute('style', `width: ${wi}px`)
+        const wi = le * _CHAR_SIZE +_CHAR_BASE
+        i.setAttribute('style', `width: ${wi}ch`)
         i.value = c
     } else {
         i.focus()
@@ -156,6 +184,7 @@ function addToCommandList(command) {
     }
 }
 
+// TO_DO Refactor
 async function invokeCommand(cmd, path) {
     let err = `'${cmd}' is not recognized as an internal or external command,\noperable program or batch file.`
     cmd = cmd.toLowerCase()
