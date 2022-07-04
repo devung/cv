@@ -1,4 +1,4 @@
-# Windows command prompt style CV
+# CMD.EXE - Windows command prompt style CV
 
 Show your cv in Windows command prompt terminal and interact using custom commands.
 
